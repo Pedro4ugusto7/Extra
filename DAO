@@ -1,0 +1,1197 @@
+package br.com.ifood.dao;
+import br.com.ifood.model.Addition;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AdditionDAO {
+
+    public void insert(Addition addition) throws SQLException {
+        String sql = "INSERT INTO addition (name, description, value) VALUES (?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, addition.getName());
+            stmt.setString(2, addition.getDescription());
+            stmt.setFloat(3, addition.getValue());
+            stmt.executeUpdate();
+        }
+    }
+
+    public Addition select(int id) throws SQLException {
+        String sql = "SELECT * FROM addition WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Addition addition = new Addition();
+                    addition.setId(rs.getInt("id"));
+                    addition.setName(rs.getString("name"));
+                    addition.setDescription(rs.getString("description"));
+                    addition.setValue(rs.getFloat("value"));
+                    return addition;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Addition> getAll() throws SQLException {
+        List<Addition> list = new ArrayList<>();
+        String sql = "SELECT * FROM addition";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Addition addition = new Addition();
+                addition.setId(rs.getInt("id"));
+                addition.setName(rs.getString("name"));
+                addition.setDescription(rs.getString("description"));
+                addition.setValue(rs.getFloat("value"));
+                list.add(addition);
+            }
+        }
+        return list;
+    }
+
+    public void update(Addition addition) throws SQLException {
+        String sql = "UPDATE addition SET name = ?, description = ?, value = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, addition.getName());
+            stmt.setString(2, addition.getDescription());
+            stmt.setFloat(3, addition.getValue());
+            stmt.setInt(4, addition.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM addition WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+    
+  
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.Addon;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AddonDAO {
+
+    public void insert(Addon addon) throws SQLException {
+        String sql = "INSERT INTO addon (name, description, price) VALUES (?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, addon.getName());
+            stmt.setString(2, addon.getDescription());
+            stmt.setFloat(3, addon.getPrice());
+            stmt.executeUpdate();
+        }
+    }
+
+    public Addon select(int id) throws SQLException {
+        String sql = "SELECT * FROM addon WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Addon addon = new Addon();
+                    addon.setId(rs.getInt("id"));
+                    addon.setName(rs.getString("name"));
+                    addon.setDescription(rs.getString("description"));
+                    addon.setPrice(rs.getFloat("price"));
+                    return addon;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Addon> getAll() throws SQLException {
+        List<Addon> list = new ArrayList<>();
+        String sql = "SELECT * FROM addon";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Addon addon = new Addon();
+                addon.setId(rs.getInt("id"));
+                addon.setName(rs.getString("name"));
+                addon.setDescription(rs.getString("description"));
+                addon.setPrice(rs.getFloat("price"));
+                list.add(addon);
+            }
+        }
+        return list;
+    }
+
+    public void update(Addon addon) throws SQLException {
+        String sql = "UPDATE addon SET name = ?, description = ?, price = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, addon.getName());
+            stmt.setString(2, addon.getDescription());
+            stmt.setFloat(3, addon.getPrice());
+            stmt.setInt(4, addon.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM addon WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.*;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AddressDAO {
+
+    public void insert(Address address) throws SQLException {
+        String sql = "INSERT INTO address (street, neighborhood, city, state, number, complement) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, address.getStreet());
+            stmt.setString(2, address.getNeighborhood());
+            stmt.setString(3, address.getCity());
+            stmt.setString(4, address.getState());
+            stmt.setInt(5, address.getNumber());
+            stmt.setString(6, address.getComplement());
+            stmt.executeUpdate();
+        }
+    }
+
+    public Address select(int id) throws SQLException {
+        String sql = "SELECT * FROM address WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Address(
+                        rs.getInt("id"),
+                        rs.getString("street"),
+                        rs.getString("neighborhood"),
+                        rs.getString("city"),
+                        rs.getString("state"),
+                        rs.getInt("number"),
+                        rs.getString("complement")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Address> getAll() throws SQLException {
+        List<Address> addresses = new ArrayList<>();
+        String sql = "SELECT * FROM address";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                addresses.add(new Address(
+                    rs.getInt("id"),
+                    rs.getString("street"),
+                    rs.getString("neighborhood"),
+                    rs.getString("city"),
+                    rs.getString("state"),
+                    rs.getInt("number"),
+                    rs.getString("complement")
+                ));
+            }
+        }
+        return addresses;
+    }
+
+    public void update(Address address) throws SQLException {
+        String sql = "UPDATE address SET street = ?, neighborhood = ?, city = ?, state = ?, number = ?, complement = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, address.getStreet());
+            stmt.setString(2, address.getNeighborhood());
+            stmt.setString(3, address.getCity());
+            stmt.setString(4, address.getState());
+            stmt.setInt(5, address.getNumber());
+            stmt.setString(6, address.getComplement());
+            stmt.setInt(7, address.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM address WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.*;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CategoryDao {
+
+    public void insert(Category category) throws SQLException {
+        String sql = "INSERT INTO category (name, type) VALUES (?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getType());
+            stmt.executeUpdate();
+        }
+    }
+
+    public Category select(int id) throws SQLException {
+        String sql = "SELECT * FROM category WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Category(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("type")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Category> getAll() throws SQLException {
+        List<Category> categories = new ArrayList<>();
+        String sql = "SELECT * FROM category";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                categories.add(new Category(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("type")
+                ));
+            }
+        }
+        return categories;
+    }
+
+    public void update(Category category) throws SQLException {
+        String sql = "UPDATE category SET name = ?, type = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getType());
+            stmt.setInt(3, category.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM category WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.Client;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ClientDAO {
+
+    public List<Client> getAll() throws SQLException {
+        List<Client> clients = new ArrayList<>();
+
+        String sql = "SELECT id, name, email, phone FROM clients";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Client c = new Client();
+                c.setId(rs.getInt("id"));
+                c.setName(rs.getString("name"));
+                c.setEmail(rs.getString("email"));
+                c.setPhone(rs.getString("phone"));
+                clients.add(c);
+            }
+        }
+        return clients;
+    }
+
+    public Client getById(int id) throws SQLException {
+        String sql = "SELECT id, name, email, phone FROM clients WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Client c = new Client();
+                    c.setId(rs.getInt("id"));
+                    c.setName(rs.getString("name"));
+                    c.setEmail(rs.getString("email"));
+                    c.setPhone(rs.getString("phone"));
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void insert(Client client) throws SQLException {
+        String sql = "INSERT INTO clients (name, email, phone) VALUES (?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, client.getName());
+            ps.setString(2, client.getEmail());
+            ps.setString(3, client.getPhone());
+
+            ps.executeUpdate();
+
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    client.setId(keys.getInt(1));
+                }
+            }
+        }
+    }
+
+    public void update(Client client) throws SQLException {
+        String sql = "UPDATE clients SET name = ?, email = ?, phone = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, client.getName());
+            ps.setString(2, client.getEmail());
+            ps.setString(3, client.getPhone());
+            ps.setInt(4, client.getId());
+
+            ps.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM clients WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
+	
+	
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.Coupon;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+public class CouponDAO {
+
+    public void insert(Coupon coupon) throws SQLException {
+        String sql = "INSERT INTO coupon (expiration_date, discount_value) VALUES (?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(coupon.getExpirationDate()));
+            stmt.setFloat(2, coupon.getDiscountValue());
+            stmt.executeUpdate();
+        }
+    }
+
+    public Coupon select(int id) throws SQLException {
+        String sql = "SELECT * FROM coupon WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Coupon coupon = new Coupon();
+                    coupon.setId(rs.getInt("id"));
+                    coupon.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+                    coupon.setDiscountValue(rs.getFloat("discount_value"));
+                    return coupon;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Coupon> getAll() throws SQLException {
+        List<Coupon> list = new ArrayList<>();
+        String sql = "SELECT * FROM coupon";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Coupon coupon = new Coupon();
+                coupon.setId(rs.getInt("id"));
+                coupon.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
+                coupon.setDiscountValue(rs.getFloat("discount_value"));
+                list.add(coupon);
+            }
+        }
+        return list;
+    }
+
+    public void update(Coupon coupon) throws SQLException {
+        String sql = "UPDATE coupon SET expiration_date = ?, discount_value = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(coupon.getExpirationDate()));
+            stmt.setFloat(2, coupon.getDiscountValue());
+            stmt.setInt(3, coupon.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM coupon WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.Order;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderDAO {
+
+    public void insert(Order order) throws SQLException {
+        String sql = "INSERT INTO orders (user_id, order_status_id, payment_status_id, payment_method_id, coupon_id, created_at, total_price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, order.getUserId());
+            stmt.setInt(2, order.getOrderStatusId());
+            stmt.setInt(3, order.getPaymentStatusId());
+            stmt.setInt(4, order.getPaymentMethodId());
+
+            if (order.getCouponId() > 0) {
+                stmt.setInt(5, order.getCouponId());
+            } else {
+                stmt.setNull(5, Types.INTEGER);
+            }
+
+            stmt.setTimestamp(6, Timestamp.valueOf(order.getCreatedAt()));
+            stmt.setFloat(7, order.getTotalPrice());
+
+            stmt.executeUpdate();
+        }
+    }
+
+    public Order select(int id) throws SQLException {
+        String sql = "SELECT * FROM orders WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Order order = new Order();
+                    order.setId(rs.getInt("id"));
+                    order.setUserId(rs.getInt("user_id"));
+                    order.setOrderStatusId(rs.getInt("order_status_id"));
+                    order.setPaymentStatusId(rs.getInt("payment_status_id"));
+                    order.setPaymentMethodId(rs.getInt("payment_method_id"));
+                    int couponId = rs.getInt("coupon_id");
+                    if (rs.wasNull()) couponId = 0;
+                    order.setCouponId(couponId);
+                    order.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                    order.setTotalPrice(rs.getFloat("total_price"));
+                    return order;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Order> getAll() throws SQLException {
+        List<Order> list = new ArrayList<>();
+        String sql = "SELECT * FROM orders";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("id"));
+                order.setUserId(rs.getInt("user_id"));
+                order.setOrderStatusId(rs.getInt("order_status_id"));
+                order.setPaymentStatusId(rs.getInt("payment_status_id"));
+                order.setPaymentMethodId(rs.getInt("payment_method_id"));
+                int couponId = rs.getInt("coupon_id");
+                if (rs.wasNull()) couponId = 0;
+                order.setCouponId(couponId);
+                order.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                order.setTotalPrice(rs.getFloat("total_price"));
+                list.add(order);
+            }
+        }
+        return list;
+    }
+
+    public void update(Order order) throws SQLException {
+        String sql = "UPDATE orders SET user_id = ?, order_status_id = ?, payment_status_id = ?, payment_method_id = ?, coupon_id = ?, created_at = ?, total_price = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, order.getUserId());
+            stmt.setInt(2, order.getOrderStatusId());
+            stmt.setInt(3, order.getPaymentStatusId());
+            stmt.setInt(4, order.getPaymentMethodId());
+
+            if (order.getCouponId() > 0) {
+                stmt.setInt(5, order.getCouponId());
+            } else {
+                stmt.setNull(5, Types.INTEGER);
+            }
+
+            stmt.setTimestamp(6, Timestamp.valueOf(order.getCreatedAt()));
+            stmt.setFloat(7, order.getTotalPrice());
+            stmt.setInt(8, order.getId());
+
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM orders WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.OrderStatus;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class OrderStatusDAO {
+
+    public void insert(OrderStatus status) throws SQLException {
+        String sql = "INSERT INTO order_status (name) VALUES (?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status.getName());
+            stmt.executeUpdate();
+        }
+    }
+
+    public OrderStatus select(int id) throws SQLException {
+        String sql = "SELECT * FROM order_status WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    OrderStatus status = new OrderStatus();
+                    status.setId(rs.getInt("id"));
+                    status.setName(rs.getString("name"));
+                    return status;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<OrderStatus> getAll() throws SQLException {
+        List<OrderStatus> list = new ArrayList<>();
+        String sql = "SELECT * FROM order_status";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                OrderStatus status = new OrderStatus();
+                status.setId(rs.getInt("id"));
+                status.setName(rs.getString("name"));
+                list.add(status);
+            }
+        }
+        return list;
+    }
+
+    public void update(OrderStatus status) throws SQLException {
+        String sql = "UPDATE order_status SET name = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status.getName());
+            stmt.setInt(2, status.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM order_status WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.PaymentMethod;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PaymentMethodDAO {
+
+    public void insert(PaymentMethod method) throws SQLException {
+        String sql = "INSERT INTO payment_method (name) VALUES (?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, method.getName());
+            stmt.executeUpdate();
+        }
+    }
+
+    public PaymentMethod select(int id) throws SQLException {
+        String sql = "SELECT * FROM payment_method WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    PaymentMethod method = new PaymentMethod();
+                    method.setId(rs.getInt("id"));
+                    method.setName(rs.getString("name"));
+                    return method;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<PaymentMethod> getAll() throws SQLException {
+        List<PaymentMethod> list = new ArrayList<>();
+        String sql = "SELECT * FROM payment_method";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                PaymentMethod method = new PaymentMethod();
+                method.setId(rs.getInt("id"));
+                method.setName(rs.getString("name"));
+                list.add(method);
+            }
+        }
+        return list;
+    }
+
+    public void update(PaymentMethod method) throws SQLException {
+        String sql = "UPDATE payment_method SET name = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, method.getName());
+            stmt.setInt(2, method.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM payment_method WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.PaymentStatus;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PaymentStatusDAO {
+
+    public void insert(PaymentStatus status) throws SQLException {
+        String sql = "INSERT INTO payment_status (name) VALUES (?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status.getName());
+            stmt.executeUpdate();
+        }
+    }
+
+    public PaymentStatus select(int id) throws SQLException {
+        String sql = "SELECT * FROM payment_status WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    PaymentStatus status = new PaymentStatus();
+                    status.setId(rs.getInt("id"));
+                    status.setName(rs.getString("name"));
+                    return status;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<PaymentStatus> getAll() throws SQLException {
+        List<PaymentStatus> list = new ArrayList<>();
+        String sql = "SELECT * FROM payment_status";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                PaymentStatus status = new PaymentStatus();
+                status.setId(rs.getInt("id"));
+                status.setName(rs.getString("name"));
+                list.add(status);
+            }
+        }
+        return list;
+    }
+
+    public void update(PaymentStatus status) throws SQLException {
+        String sql = "UPDATE payment_status SET name = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, status.getName());
+            stmt.setInt(2, status.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM payment_status WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+package br.com.ifood.dao;
+import br.com.ifood.model.Product;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductDAO {
+
+    // Create - Insert a new product
+    public void insert(Product product) throws SQLException {
+        String sql = "INSERT INTO product (name, rating, price, description, category_id, restaurant_id) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, product.getName());
+            stmt.setString(2, product.getEvaluation());
+            stmt.setFloat(3, product.getPrice());
+            stmt.setString(4, product.getDescription());
+            stmt.setInt(5, product.getCategoryId());
+            stmt.setInt(6, product.getRestaurantId());
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Read - Select product by ID
+    public Product select(int id) throws SQLException {
+        String sql = "SELECT * FROM product WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Product product = new Product();
+                    product.setId(rs.getInt("id"));
+                    product.setName(rs.getString("name"));
+                    product.setEvaluation(rs.getString("rating"));
+                    product.setPrice(rs.getFloat("price"));
+                    product.setDescription(rs.getString("description"));
+                    product.setCategoryId(rs.getInt("category_id"));
+                    product.setRestaurantId(rs.getInt("restaurant_id"));
+                    return product;
+                }
+            }
+        }
+        return null; // not found
+    }
+
+    // Read - Get all products
+    public List<Product> getAll() throws SQLException {
+        List<Product> products = new ArrayList<>();
+        String sql = "SELECT * FROM product";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setEvaluation(rs.getString("rating"));
+                product.setPrice(rs.getFloat("price"));
+                product.setDescription(rs.getString("description"));
+                product.setCategoryId(rs.getInt("category_id"));
+                product.setRestaurantId(rs.getInt("restaurant_id"));
+                products.add(product);
+            }
+        }
+        return products;
+    }
+
+    // Update product
+    public void update(Product product) throws SQLException {
+        String sql = "UPDATE product SET name = ?, rating = ?, price = ?, description = ?, category_id = ?, restaurant_id = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, product.getName());
+            stmt.setString(2, product.getEvaluation());
+            stmt.setFloat(3, product.getPrice());
+            stmt.setString(4, product.getDescription());
+            stmt.setInt(5, product.getCategoryId());
+            stmt.setInt(6, product.getRestaurantId());
+            stmt.setInt(7, product.getId());
+
+            stmt.executeUpdate();
+        }
+    }
+
+    // Delete product by ID
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM product WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.ProductOrderAddon;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductOrderAddonDAO {
+
+    public void insert(ProductOrderAddon poa) throws SQLException {
+        String sql = "INSERT INTO product_order_addon (product_order_id, addon_id) VALUES (?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, poa.getProductOrderId());
+            stmt.setInt(2, poa.getAddonId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public ProductOrderAddon select(int id) throws SQLException {
+        String sql = "SELECT * FROM product_order_addon WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    ProductOrderAddon poa = new ProductOrderAddon();
+                    poa.setId(rs.getInt("id"));
+                    poa.setProductOrderId(rs.getInt("product_order_id"));
+                    poa.setAddonId(rs.getInt("addon_id"));
+                    return poa;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<ProductOrderAddon> getAll() throws SQLException {
+        List<ProductOrderAddon> list = new ArrayList<>();
+        String sql = "SELECT * FROM product_order_addon";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                ProductOrderAddon poa = new ProductOrderAddon();
+                poa.setId(rs.getInt("id"));
+                poa.setProductOrderId(rs.getInt("product_order_id"));
+                poa.setAddonId(rs.getInt("addon_id"));
+                list.add(poa);
+            }
+        }
+        return list;
+    }
+
+    public void update(ProductOrderAddon poa) throws SQLException {
+        String sql = "UPDATE product_order_addon SET product_order_id = ?, addon_id = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, poa.getProductOrderId());
+            stmt.setInt(2, poa.getAddonId());
+            stmt.setInt(3, poa.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM product_order_addon WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.ProductOrder;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductOrderDAO {
+
+    public void insert(ProductOrder po) throws SQLException {
+        String sql = "INSERT INTO product_order (order_id, product_id, quantity) VALUES (?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, po.getOrderId());
+            stmt.setInt(2, po.getProductId());
+            stmt.setInt(3, po.getQuantity());
+            stmt.executeUpdate();
+        }
+    }
+
+    public ProductOrder select(int id) throws SQLException {
+        String sql = "SELECT * FROM product_order WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    ProductOrder po = new ProductOrder();
+                    po.setId(rs.getInt("id"));
+                    po.setOrderId(rs.getInt("order_id"));
+                    po.setProductId(rs.getInt("product_id"));
+                    po.setQuantity(rs.getInt("quantity"));
+                    return po;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<ProductOrder> getAll() throws SQLException {
+        List<ProductOrder> list = new ArrayList<>();
+        String sql = "SELECT * FROM product_order";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                ProductOrder po = new ProductOrder();
+                po.setId(rs.getInt("id"));
+                po.setOrderId(rs.getInt("order_id"));
+                po.setProductId(rs.getInt("product_id"));
+                po.setQuantity(rs.getInt("quantity"));
+                list.add(po);
+            }
+        }
+        return list;
+    }
+
+    public void update(ProductOrder po) throws SQLException {
+        String sql = "UPDATE product_order SET order_id = ?, product_id = ?, quantity = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, po.getOrderId());
+            stmt.setInt(2, po.getProductId());
+            stmt.setInt(3, po.getQuantity());
+            stmt.setInt(4, po.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM product_order WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
+
+package br.com.ifood.dao;
+import br.com.ifood.model.*;
+import util.ConnectionFactory;
+
+import java.sql.*;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+public class RestaurantDAO {
+
+    public void insert(Restaurant restaurant) throws SQLException {
+        String sql = "INSERT INTO restaurant (name, description, category_id, address_id, opening_time, rating, delivery_fee, preparation_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, restaurant.getName());
+            stmt.setString(2, restaurant.getDescription());
+            stmt.setInt(3, restaurant.getCategoryId());
+            stmt.setInt(4, restaurant.getAddressId());
+            stmt.setTime(5, Time.valueOf(restaurant.getOpeningTime()));
+            stmt.setDouble(6, restaurant.getRating());
+            stmt.setDouble(7, restaurant.getDeliveryFee());
+            stmt.setDouble(8, restaurant.getPreparationTime());
+            stmt.executeUpdate();
+        }
+    }
+
+    public Restaurant select(int id) throws SQLException {
+        String sql = "SELECT * FROM restaurant WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Restaurant(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getInt("category_id"),
+                        rs.getInt("address_id"),
+                        rs.getTime("opening_time").toLocalTime(),
+                        rs.getDouble("rating"),
+                        rs.getDouble("delivery_fee"),
+                        rs.getDouble("preparation_time")
+                    );
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Restaurant> getAll() throws SQLException {
+        List<Restaurant> list = new ArrayList<>();
+        String sql = "SELECT * FROM restaurant";
+        try (Connection conn = ConnectionFactory.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                list.add(new Restaurant(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("description"),
+                    rs.getInt("category_id"),
+                    rs.getInt("address_id"),
+                    rs.getTime("opening_time").toLocalTime(),
+                    rs.getDouble("rating"),
+                    rs.getDouble("delivery_fee"),
+                    rs.getDouble("preparation_time")
+                ));
+            }
+        }
+        return list;
+    }
+
+    public void update(Restaurant restaurant) throws SQLException {
+        String sql = "UPDATE restaurant SET name = ?, description = ?, category_id = ?, address_id = ?, opening_time = ?, rating = ?, delivery_fee = ?, preparation_time = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, restaurant.getName());
+            stmt.setString(2, restaurant.getDescription());
+            stmt.setInt(3, restaurant.getCategoryId());
+            stmt.setInt(4, restaurant.getAddressId());
+            stmt.setTime(5, Time.valueOf(restaurant.getOpeningTime()));
+            stmt.setDouble(6, restaurant.getRating());
+            stmt.setDouble(7, restaurant.getDeliveryFee());
+            stmt.setDouble(8, restaurant.getPreparationTime());
+            stmt.setInt(9, restaurant.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM restaurant WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+}
