@@ -126,4 +126,23 @@ public class PessoaGUI extends JFrame {
             new PessoaGUI().setVisible(true);
         });
     }
+
+
+
+txtCep.addFocusListener(new FocusAdapter() {
+    public void focusLost(FocusEvent e) {
+        String cep = txtCep.getText().replaceAll("\\D", "");
+        if (cep.length() == 8) {
+            try {
+                Endereco endereco = ViaCepService.buscarEnderecoPorCep(cep);
+                txtLogradouro.setText(endereco.getLogradouro());
+                txtBairro.setText(endereco.getBairro());
+                txtCidade.setText(endereco.getLocalidade());
+                txtEstado.setText(endereco.getUf());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "CEP não encontrado ou inválido.");
+            }
+        }
+    }
+});
 }
