@@ -1,0 +1,2 @@
+baixei o eclipse e criei as classes em java com base nas tabelas que fiz no MySql ,joguei elas no chat apenas para ele colocalas em ingles,tanto as de java como as de sql.Fui vendo videos ensianando a fazer os CRUDS e criei um packge para os DAO e 
+na parte da interface grafica estava dando erros ,fiz sozinho a parte do sql,classes e boa parte do DAO ,apenas usei o chat para complementar o codigo e fazer a parte do Gui,estava dando alguns erros no codigo,entao não funcionou ,mais esta ai o que eu consegui fazer.
