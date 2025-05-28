@@ -1,0 +1,129 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.SQLException;
+import java.util.List;
+
+public class PessoaGUI extends JFrame {
+
+    private JTextField txtNome, txtEmail;
+    private JButton btnAdicionar, btnAtualizar, btnDeletar;
+    private JTable tabela;
+    private DefaultTableModel modeloTabela;
+    private PessoaDAO dao;
+
+    public PessoaGUI() {
+        dao = new PessoaDAO();
+
+        setTitle("CRUD Pessoa");
+        setSize(600, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        txtNome = new JTextField(20);
+        txtEmail = new JTextField(20);
+
+        btnAdicionar = new JButton("Adicionar");
+        btnAtualizar = new JButton("Atualizar");
+        btnDeletar = new JButton("Deletar");
+
+        modeloTabela = new DefaultTableModel(new String[]{"ID", "Nome", "Email"}, 0);
+        tabela = new JTable(modeloTabela);
+        carregarTabela();
+
+        JPanel painelForm = new JPanel();
+        painelForm.add(new JLabel("Nome:"));
+        painelForm.add(txtNome);
+        painelForm.add(new JLabel("Email:"));
+        painelForm.add(txtEmail);
+        painelForm.add(btnAdicionar);
+        painelForm.add(btnAtualizar);
+        painelForm.add(btnDeletar);
+
+        add(painelForm, BorderLayout.NORTH);
+        add(new JScrollPane(tabela), BorderLayout.CENTER);
+
+        // Eventos
+        btnAdicionar.addActionListener(e -> adicionar());
+        btnAtualizar.addActionListener(e -> atualizar());
+        btnDeletar.addActionListener(e -> deletar());
+
+        tabela.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                int linha = tabela.getSelectedRow();
+                if (linha >= 0) {
+                    txtNome.setText(modeloTabela.getValueAt(linha, 1).toString());
+                    txtEmail.setText(modeloTabela.getValueAt(linha, 2).toString());
+                }
+            }
+        });
+    }
+
+    private void carregarTabela() {
+        try {
+            List<Pessoa> pessoas = dao.listarPessoas();
+            modeloTabela.setRowCount(0);
+            for (Pessoa p : pessoas) {
+                modeloTabela.addRow(new Object[]{p.getId(), p.getNome(), p.getEmail()});
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar dados: " + e.getMessage());
+        }
+    }
+
+    private void adicionar() {
+        try {
+            Pessoa p = new Pessoa(txtNome.getText(), txtEmail.getText());
+            dao.adicionarPessoa(p);
+            carregarTabela();
+            limparCampos();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao adicionar: " + e.getMessage());
+        }
+    }
+
+    private void atualizar() {
+        int linha = tabela.getSelectedRow();
+        if (linha < 0) {
+            JOptionPane.showMessageDialog(this, "Selecione uma pessoa para atualizar.");
+            return;
+        }
+        try {
+            int id = (int) modeloTabela.getValueAt(linha, 0);
+            Pessoa p = new Pessoa(id, txtNome.getText(), txtEmail.getText());
+            dao.atualizarPessoa(p);
+            carregarTabela();
+            limparCampos();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
+    private void deletar() {
+        int linha = tabela.getSelectedRow();
+        if (linha < 0) {
+            JOptionPane.showMessageDialog(this, "Selecione uma pessoa para deletar.");
+            return;
+        }
+        try {
+            int id = (int) modeloTabela.getValueAt(linha, 0);
+            dao.deletarPessoa(id);
+            carregarTabela();
+            limparCampos();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao deletar: " + e.getMessage());
+        }
+    }
+
+    private void limparCampos() {
+        txtNome.setText("");
+        txtEmail.setText("");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new PessoaGUI().setVisible(true);
+        });
+    }
+}
