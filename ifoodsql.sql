@@ -107,3 +107,8 @@ CREATE TABLE product_order_addon (
     FOREIGN KEY (addon_id) REFERENCES addon(id),
     FOREIGN KEY (product_id, order_id) REFERENCES product_order(product_id, order_id)
 );
+ALTER TABLE pessoa ADD COLUMN cep VARCHAR(9);
+ALTER TABLE pessoa ADD COLUMN logradouro VARCHAR(150);
+ALTER TABLE pessoa ADD COLUMN bairro VARCHAR(100);
+ALTER TABLE pessoa ADD COLUMN cidade VARCHAR(100);
+ALTER TABLE pessoa ADD COLUMN estado VARCHAR(2);
