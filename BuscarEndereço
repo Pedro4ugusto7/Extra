@@ -1,0 +1,40 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import com.google.gson.Gson;
+
+public class ViaCepService {
+
+    public static Endereco buscarEnderecoPorCep(String cep) throws Exception {
+        String urlString = "https://viacep.com.br/ws/" + cep + "/json/";
+        URL url = new URL(urlString);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        int status = con.getResponseCode();
+        if (status != 200) {
+            throw new RuntimeException("Erro na requisição HTTP: " + status);
+        }
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+        String inputLine;
+        StringBuilder content = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            content.append(inputLine);
+        }
+        in.close();
+        con.disconnect();
+
+        Gson gson = new Gson();
+        Endereco endereco = gson.fromJson(content.toString(), Endereco.class);
+
+        // ViaCEP retorna {"erro": true} se CEP inválido
+        if (content.toString().contains("\"erro\"")) {
+            throw new RuntimeException("CEP não encontrado");
+        }
+
+        return endereco;
+    }
+}
